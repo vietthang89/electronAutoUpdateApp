@@ -1,22 +1,14 @@
 {
   "name": "electronautoupdateapp",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "description": "",
   "main": "app/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "build": "electron-builder build --win --publish never",
-    "deploy": "electron-builder build  --win --publish always"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vietthang89/electronAutoUpdateApp.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vietthang89/electronAutoUpdateApp/issues"
+    "deploy": "electron-builder build  --win --publish always",
+    "release": "build -p always"
   },
   "homepage": "https://github.com/vietthang89/electronAutoUpdateApp#readme",
   "devDependencies": {
@@ -24,6 +16,7 @@
     "electron-builder": "^21.2.0"
   },
   "dependencies": {
-    "electron-updater": "^4.1.2"
+    "electron-updater": "^2.21.4",
+    "winston": "^3.2.1"
   }
 }

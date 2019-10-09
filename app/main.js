@@ -1,6 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const winston = require('winston');
 
+
+let feedUrl = 'http://localhost:80/update/win64/' + app.getVersion() +'/RELEASES';
 let mainWindow;
 
 function createWindow () {
@@ -19,7 +22,9 @@ function createWindow () {
 
 app.on('ready', () => {
     createWindow();
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.setFeedURL(feedUrl);
+    winston.log('info', 'initiating version check');
+    autoUpdater.checkForUpdates();
 });
 
 app.on('window-all-closed', function () {
@@ -39,11 +44,20 @@ ipcMain.on('app_version', (event) => {
 })
 
 autoUpdater.on('update-available', () => {
+    winston.log('info', 'update-available');
     mainWindow.webContents.send('update_available');
 });
 autoUpdater.on('update-downloaded', () => {
+    winston.log('info', 'update-downloaded');
+
     mainWindow.webContents.send('update_downloaded');
 });
+
+autoUpdater.on('error', (data) => {
+    winston.log('error', 'error-on-update');
+    winston.log('info', data);
+});
+
 ipcMain.on('restart_app', () => {
     autoUpdater.quitAndInstall();
 });
